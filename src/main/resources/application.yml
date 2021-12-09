@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: core-data-management-ms
+
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      database: octopus
+
+server:
+  servlet:
+    context-path: /coreDataManagement/v1
+  http2:
+    enabled: true
+  port: 9000
