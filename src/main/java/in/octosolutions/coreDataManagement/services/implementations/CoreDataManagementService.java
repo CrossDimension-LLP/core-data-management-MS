@@ -67,13 +67,14 @@ public class CoreDataManagementService implements ICoreDataManagementService {
     @Override
     public Doctor saveDoctor(Doctor doctor) {
         doctor.setId(genericUtilityInterface.uniqueIdGenerator("Doctor"));
+        doctor.setFullName(doctor.getFirstName()+" "+ doctor.getLastName());
         return doctorDataManagementRepository.save(doctor);
     }
 
     @Override
     public List<Doctor> deleteDoctors(String filter) {
         List<Doctor> doctorList = this.getDoctors(filter);
-        doctorList.stream().forEach(d -> mongoTemplate.remove(d));
+        doctorList.stream().forEach(docId -> mongoTemplate.remove(docId));
         return doctorList;
     }
 
@@ -157,7 +158,7 @@ public class CoreDataManagementService implements ICoreDataManagementService {
     @Override
     public List<Prescription> deletePrescriptions(String filter) {
         List<Prescription> prescriptionList = this.getPrescriptions(filter);
-        prescriptionList.stream().forEach(p -> mongoTemplate.remove(p));
+        prescriptionList.stream().forEach(prescription -> mongoTemplate.remove(prescription));
         return prescriptionList;
     }
 

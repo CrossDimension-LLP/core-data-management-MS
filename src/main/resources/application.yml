@@ -4,9 +4,10 @@ spring:
 
   data:
     mongodb:
-      port: 27017
-      host: localhost
+#      port: 27017
+#      host: localhost
       database: octopus
+      uri: mongodb+srv://octohealth:future@cluster0.svyi6.mongodb.net/octopus?retryWrites=true&w=majority
 
 server:
   servlet:
