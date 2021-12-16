@@ -12,15 +12,22 @@ import in.octosolutions.coreDataManagement.repository.interfaces.IDepartmentData
 import in.octosolutions.coreDataManagement.repository.interfaces.IDoctorDataManagementRepository;
 import in.octosolutions.coreDataManagement.repository.interfaces.IPrescriptionDataManagementRepository;
 import in.octosolutions.coreDataManagement.services.interfaces.ICoreDataManagementService;
+import static in.octosolutions.coreDataManagement.utils.CoreDataManagementConstants.*;
 import in.octosolutions.nucleus.service.interfaces.IGenericUtilityInterface;
 import in.octosolutions.nucleus.service.interfaces.IQueryBuilder;
 import in.octosolutions.nucleus.service.interfaces.IRestLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class CoreDataManagementService implements ICoreDataManagementService {
@@ -66,9 +73,13 @@ public class CoreDataManagementService implements ICoreDataManagementService {
 
     @Override
     public Doctor saveDoctor(Doctor doctor) {
-        doctor.setId(genericUtilityInterface.uniqueIdGenerator("Doctor"));
-        doctor.setFullName(doctor.getFirstName()+" "+ doctor.getLastName());
-        return doctorDataManagementRepository.save(doctor);
+        if (!isAlreadyExists(doctor.getAadharId(), doctor.getDoctorRegistrationId(), doctor.getDigiDoctorId())) {
+            doctor.setId(genericUtilityInterface.uniqueIdGenerator(DOCTOR));
+            doctor.setFullName(doctor.getFirstName()+" "+ doctor.getLastName());
+            return doctorDataManagementRepository.save(doctor);
+        } else {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
@@ -109,8 +120,11 @@ public class CoreDataManagementService implements ICoreDataManagementService {
 
     @Override
     public Department saveDepartment(Department department) {
-        department.setId(genericUtilityInterface.uniqueIdGenerator("Department"));
-        return departmentDataManagementRepository.save(department);
+        if (!isDepartmentAlreadyExists(department.getName())) {
+            department.setId(genericUtilityInterface.uniqueIdGenerator(DEPARTMENT));
+            return departmentDataManagementRepository.save(department);
+        }
+        throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -204,5 +218,21 @@ public class CoreDataManagementService implements ICoreDataManagementService {
         } catch (JsonProcessingException e) {
             return null;
         }
+    }
+
+    private boolean isAlreadyExists(String aadharId, String regId, String digiDocId) {
+        Map<String, String> attributeMap = new HashMap<>();
+            attributeMap.put(AADHAR_ID, aadharId);
+            attributeMap.put(DIGI_DOC_ID, digiDocId);
+            attributeMap.put(DOC_REG_ID, regId);
+            List<Doctor> doctors = mongoTemplate.find(queryBuilder.mongoSearchWithAttribute(attributeMap), Doctor.class);
+        return !CollectionUtils.isEmpty(doctors);
+    }
+
+    private boolean isDepartmentAlreadyExists(String name) {
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put(NAME, name);
+        List<Department> departments = mongoTemplate.find(queryBuilder.mongoSearchWithAttribute(attributeMap), Department.class);
+        return !CollectionUtils.isEmpty(departments);
     }
 }

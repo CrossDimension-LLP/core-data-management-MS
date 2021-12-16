@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class DoctorDataManagementController {
     @PostMapping("/doctor")
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(value = "allDoctorCache", allEntries = true)
-    public Doctor saveDoctor(@RequestBody Doctor doctor){
+    public Doctor saveDoctor(@RequestBody Doctor doctor) throws HttpClientErrorException.BadRequest {
         return coreDataManagementService.saveDoctor(doctor);
     }
 
