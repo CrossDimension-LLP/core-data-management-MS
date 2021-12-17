@@ -3,7 +3,7 @@ package in.octosolutions.coreDataManagement.controller;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import in.octosolutions.coreDataManagement.ms.ck.resource.coreData.model.Department;
-import in.octosolutions.coreDataManagement.services.interfaces.ICoreDataManagementService;
+import in.octosolutions.coreDataManagement.services.interfaces.IDepartmentDataManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,9 @@ import java.util.List;
 public class DepartmentDataManagementController {
 
     @Autowired
-    ICoreDataManagementService coreDataManagementService;
+    IDepartmentDataManagementService coreDataManagementService;
+
+
 
     /**Department Management APIs*/
     @GetMapping("/department")

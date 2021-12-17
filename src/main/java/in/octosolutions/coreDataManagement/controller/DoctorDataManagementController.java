@@ -2,13 +2,10 @@ package in.octosolutions.coreDataManagement.controller;
 
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import in.octosolutions.coreDataManagement.ms.ck.resource.coreData.model.Department;
 import in.octosolutions.coreDataManagement.ms.ck.resource.coreData.model.Doctor;
-import in.octosolutions.coreDataManagement.ms.ck.resource.coreData.model.Prescription;
-import in.octosolutions.coreDataManagement.services.interfaces.ICoreDataManagementService;
+import in.octosolutions.coreDataManagement.services.interfaces.IDoctorDataManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,7 @@ import java.util.List;
 @RestController
 public class DoctorDataManagementController {
     @Autowired
-    ICoreDataManagementService coreDataManagementService;
+    IDoctorDataManagementService coreDataManagementService;
 
     /**Doctor Management APIs*/
     @GetMapping("/doctor")

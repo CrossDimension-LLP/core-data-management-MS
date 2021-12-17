@@ -116,7 +116,20 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.groupdocs</groupId>
+            <artifactId>groupdocs-assembly</artifactId>
+            <version>21.1</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>GroupDocsJavaAPI</id>
+            <name>GroupDocs Java API</name>
+            <url>http://repository.groupdocs.com/repo/</url>
+        </repository>
+
+    </repositories>
 
     <build>
         <plugins>

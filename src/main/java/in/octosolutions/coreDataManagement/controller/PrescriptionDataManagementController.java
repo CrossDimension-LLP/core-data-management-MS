@@ -3,7 +3,7 @@ package in.octosolutions.coreDataManagement.controller;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import in.octosolutions.coreDataManagement.ms.ck.resource.coreData.model.Prescription;
-import in.octosolutions.coreDataManagement.services.interfaces.ICoreDataManagementService;
+import in.octosolutions.coreDataManagement.services.interfaces.IPrescriptionDataManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public class PrescriptionDataManagementController {
     @Autowired
-    ICoreDataManagementService coreDataManagementService;
+    IPrescriptionDataManagement coreDataManagementService;
 
     /**Prescription Management APIs*/
     @GetMapping("/prescription")
